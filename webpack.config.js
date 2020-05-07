@@ -2,7 +2,6 @@ const path = require('path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const OptimizeCssAssetWebpackPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
 
@@ -29,7 +28,7 @@ const optimization = (function () {
 }());
 
 module.exports = {
-  context: path.resolve(__dirname, 'src'),
+  context: path.resolve(__dirname, 'src/script'),
   mode: 'development',
   entry: './index.js',
   output: {
@@ -38,7 +37,7 @@ module.exports = {
   },
   plugins: [
     new HTMLWebpackPlugin({
-      template: './index.html',
+      template: path.resolve(__dirname, './index.html'),
       minify: {
         collapseWhitespace: isProd,
       },
@@ -49,13 +48,6 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: filename('css'),
     }),
-
-    new CopyWebpackPlugin([
-      {
-        from: path.resolve(__dirname, 'src/assets'),
-        to: path.resolve(__dirname, 'dist/assets'),
-      },
-    ]),
   ],
 
   devServer: {
