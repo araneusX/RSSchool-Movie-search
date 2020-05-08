@@ -11,6 +11,7 @@
   }
 
   &_form {
+    position: relative;
     display: flex;
     min-width: 0;
     width: 100%;
@@ -39,6 +40,21 @@
     width: 100vw;
   }
 
+  &_clear {
+    position: absolute;
+    right: 70px;
+    top: 1px;
+    height: 35px;
+    width: 35px;
+    background: url(/src/img/clear.svg) center center no-repeat;
+    opacity: 0.5;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.8;
+    }
+}
+
   &_button {
     flex: 0 0 auto;
     padding: 0 5px;
@@ -53,6 +69,7 @@
     line-height: 1.5;
     border: 1px solid #ced4da;
     border-radius: .25rem;
+    cursor: pointer;
 
     span {
       color: red;
@@ -110,6 +127,12 @@
     line-height: 1.5em;
     margin-top: 4px;
     padding: 0 30px;
+
+    @media (max-width: 769px) {
+      font-size: 14px;
+    }
+
+  
 
     &.success {
       background: linear-gradient(90deg, rgba(255,255,255,1) 0%,  rgba(177,236,166,0.5) 30px, rgba(177,236,166,0.4) 50%, rgba(255,255,255,1) 100%);

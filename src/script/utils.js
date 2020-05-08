@@ -48,7 +48,11 @@ export const getPosters = async (moviesArr) => {
   const promises = moviesArr.map(async (movie) => {
     const link = movie.Poster === 'N/A' ? '/src/img/noposter.jpg' : movie.Poster;
     let res;
-    res = await fetch(link);
+    try {
+      res = await fetch(link);
+    } catch (err) {
+      res = await fetch('/src/img/noposter.jpg');
+    }
     if (!res.ok) {
       res = await fetch('/src/img/noposter.jpg');
     }

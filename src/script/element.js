@@ -19,6 +19,10 @@ export default class {
     this.element.classList.remove(...classes);
   }
 
+  focus() {
+    this.element.focus();
+  }
+
   get style() {
     return this.element.style;
   }

@@ -13,6 +13,7 @@ const runApp = async () => {
   const slidesWrapper = new Element(document.getElementById('js-slides'));
   const preloader = new Preloader();
   const message = new Element(document.getElementById('js-message'));
+  const clearBtn = new Element(document.getElementById('js-clear'));
 
   let allShowResults;
   let totalResults;
@@ -37,6 +38,7 @@ const runApp = async () => {
     fadeEffect: {
       crossFade: true,
     },
+    centerInsufficientSlides: true,
     slidesPerView: 1,
     spaceBetween: 10,
     breakpoints: {
@@ -77,48 +79,53 @@ const runApp = async () => {
   }
   preloader.hide();
 
-  window.addEventListener('resize', async () => { swiper.navigation.update(); });
+  clearBtn.addListener('click', () => {
+    input.value = ''; input.focus();
+  });
 
   form.addListener('submit', async (e) => {
     e.preventDefault();
-    preloader.show();
-    try {
-      const list = await getMoviesList(input.value, 1);
+    if (input.value !== '') {
+      preloader.show();
+      try {
+        const list = await getMoviesList(input.value, 1);
+        if (list.Response === 'True') {
+          const movies = list.Search;
+          const slides = await getSlides(movies);
 
-      if (list.Response === 'True') {
-        const movies = list.Search;
-        const slides = await getSlides(movies);
+          totalResults = list.totalResults;
+          allShowResults = movies.length;
+          request = list.request;
+          nextPage = 2;
 
-        totalResults = list.totalResults;
-        allShowResults = movies.length;
-        request = list.request;
-        nextPage = 2;
-
-        slidesWrapper.addClass('disappearing');
-        setTimeout(() => {
-          swiper.removeAllSlides();
-          swiper.appendSlide(slides);
-          slidesWrapper.removeClass('disappearing');
-          preloader.hide();
-        }, 300);
-        message.content = `Showing results for "${list.request}":`;
-        message.removeClass('error');
-        message.addClass('success');
-      } else {
-        if (list.Error === 'Movie not found!') {
-          message.content = `No results for "${list.request}"...`;
+          slidesWrapper.addClass('disappearing');
+          setTimeout(() => {
+            swiper.removeAllSlides();
+            swiper.appendSlide(slides);
+            slidesWrapper.removeClass('disappearing');
+            preloader.hide();
+          }, 300);
+          message.content = `Showing results for "${list.request}":`;
+          message.removeClass('error');
+          message.addClass('success');
         } else {
-          message.content = `Unable to process request. ${list.Error}`;
+          if (list.Error === 'Movie not found!') {
+            message.content = `No results for "${list.request}"...`;
+          } else {
+            message.content = `Unable to process request. ${list.Error}`;
+          }
+          message.removeClass('success');
+          message.addClass('error');
+          preloader.hide();
         }
+      } catch (err) {
+        message.content = `${err}`.slice(7);
         message.removeClass('success');
         message.addClass('error');
         preloader.hide();
       }
-    } catch (err) {
-      message.content = `${err}`.slice(7);
-      message.removeClass('success');
-      message.addClass('error');
-      preloader.hide();
+    } else {
+      input.focus();
     }
   });
 
