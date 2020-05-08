@@ -6,6 +6,10 @@
     margin-top: 20px;
   }
 
+  &_wrapper {
+    flex-direction: column;
+  }
+
   &_form {
     display: flex;
     min-width: 0;
@@ -98,6 +102,21 @@
     &:focus {
       color: #3c4146;
       border-color: #a6c8ec;
+    }
+  }
+
+  &_message {
+    font-size: 16px;
+    line-height: 1.5em;
+    margin-top: 4px;
+    padding: 0 30px;
+
+    &.success {
+      background: linear-gradient(90deg, rgba(255,255,255,1) 0%,  rgba(177,236,166,0.5) 30px, rgba(177,236,166,0.4) 50%, rgba(255,255,255,1) 100%);
+    }
+
+    &.error {
+      background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,0,0,0.3) 30px, rgba(255,0,0,0.2) 70%, rgba(255,255,255,1) 100%);    
     }
   }
 }

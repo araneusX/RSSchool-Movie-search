@@ -4,9 +4,7 @@ import '../css/style.scss';
 import Element from './element';
 import Preloader from './preloader';
 
-import {
-  getMoviesList, getMoreInfo, getPosters, getRandomWord,
-} from './utils';
+import { getMoviesList, getRandomWord, getShowSlidersCount } from './utils';
 import { getSlides } from './createSlide';
 
 const runApp = async () => {
@@ -14,7 +12,14 @@ const runApp = async () => {
   const input = new Element(document.getElementById('js-input'));
   const slidesWrapper = new Element(document.getElementById('js-slides'));
   const preloader = new Preloader();
-  
+  const message = new Element(document.getElementById('js-message'));
+
+  let allShowResults;
+  let totalResults;
+  let request = getRandomWord();
+  let nextPage = 1;
+  let isLoading = false;
+
   const swiper = new Swiper('.swiper-container', {
     direction: 'horizontal',
     loop: false,
@@ -39,11 +44,11 @@ const runApp = async () => {
         slidesPerView: 2,
         spaceBetween: 20,
       },
-      '@1.5': {
+      '@1.3': {
         slidesPerView: 3,
         spaceBetween: 30,
       },
-      '@2': {
+      '@1.8': {
         slidesPerView: 4,
         spaceBetween: 30,
       },
@@ -51,17 +56,25 @@ const runApp = async () => {
   });
 
   preloader.show();
-  let allShowResults;
-  const randomWord = getRandomWord();
-  const startRequest = await getMoviesList(randomWord, Math.floor(Math.random() * 4) + 1);
-  if (startRequest.Response === 'True') {
-    allShowResults = startRequest.Search;
-    const startSlides = await getSlides(allShowResults);
-    swiper.appendSlide(startSlides);
-  } else {
-    console.log(startRequest.Error);
+  try {
+    const startSet = await getMoviesList(request, 1);
+    if (startSet.Response === 'True') {
+      const startSlides = await getSlides(startSet.Search);
+      swiper.appendSlide(startSlides);
+      allShowResults = startSet.Search.length;
+      totalResults = startSet.totalResults;
+      message.content = `Showing results for "${startSet.request}":`;
+      message.addClass('success');
+      nextPage = 2;
+    } else {
+      message.addClass('error');
+      message.content = 'Service unavailable now. Try again later';
+    }
+    slidesWrapper.removeClass('disappearing');
+  } catch (err) {
+    message.addClass('error');
+    message.content = 'Service unavailable now. Try again later';
   }
-  slidesWrapper.removeClass('disappearing');
   preloader.hide();
 
   window.addEventListener('resize', async () => { swiper.navigation.update(); });
@@ -69,21 +82,66 @@ const runApp = async () => {
   form.addListener('submit', async (e) => {
     e.preventDefault();
     preloader.show();
-    const list = await getMoviesList(input.value, 1);
-    if (list.Response === 'True') {
-      const { totalResults } = list;
-      const movies = list.Search;
-      const slides = await getSlides(movies);
-      slidesWrapper.addClass('disappearing');
-      setTimeout(() => {
-        swiper.removeAllSlides();
-        swiper.appendSlide(slides);
-        slidesWrapper.removeClass('disappearing');
+    try {
+      const list = await getMoviesList(input.value, 1);
+
+      if (list.Response === 'True') {
+        const movies = list.Search;
+        const slides = await getSlides(movies);
+
+        totalResults = list.totalResults;
+        allShowResults = movies.length;
+        request = list.request;
+        nextPage = 2;
+
+        slidesWrapper.addClass('disappearing');
+        setTimeout(() => {
+          swiper.removeAllSlides();
+          swiper.appendSlide(slides);
+          slidesWrapper.removeClass('disappearing');
+          preloader.hide();
+        }, 300);
+        message.content = `Showing results for "${list.request}":`;
+        message.removeClass('error');
+        message.addClass('success');
+      } else {
+        if (list.Error === 'Movie not found!') {
+          message.content = `No results for "${list.request}"...`;
+        } else {
+          message.content = `Unable to process request. ${list.Error}`;
+        }
+        message.removeClass('success');
+        message.addClass('error');
         preloader.hide();
-      }, 300);
-    } else {
-      console.log(list.Error);
+      }
+    } catch (err) {
+      message.content = `${err}`.slice(7);
+      message.removeClass('success');
+      message.addClass('error');
       preloader.hide();
+    }
+  });
+
+  swiper.on('slideChange', async () => {
+    if (!isLoading
+      && allShowResults - (getShowSlidersCount(swiper) + swiper.activeIndex) < 6
+      && allShowResults < totalResults) {
+      isLoading = true;
+      try {
+        const list = await getMoviesList(request, nextPage);
+        if (list.Response === 'True') {
+          const movies = list.Search;
+          const slides = await getSlides(movies);
+          nextPage += 1;
+          allShowResults += movies.length;
+          swiper.appendSlide(slides);
+        } else {
+          console.log(`${request}: ${list.Error}`);
+        }
+      } catch (err) {
+        console.log(`${request}: ${err}`);
+      }
+      isLoading = false;
     }
   });
 };

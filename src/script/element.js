@@ -34,4 +34,24 @@ export default class {
   set value(value) {
     this.element.value = value;
   }
+
+  set content(value) {
+    while (this.element.firstChild) {
+      this.element.removeChild(this.element.firstChild);
+    }
+
+    if (value instanceof Array) {
+      value.forEach((item) => {
+        if (item instanceof HTMLElement) {
+          this.element.append(item);
+        } else {
+          this.element.append(document.createTextNode(item));
+        }
+      });
+    } else if (value instanceof HTMLElement) {
+      this.element.append(value);
+    } else {
+      this.element.append(document.createTextNode(value));
+    }
+  }
 }
