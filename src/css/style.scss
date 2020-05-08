@@ -1,5 +1,5 @@
-  
 @import "~normalize.css";
+@import "/node_modules/swiper/css/swiper.min.css";
 @import "slider.scss";
 @import "search.scss";
 
@@ -85,7 +85,8 @@ h1 {
 
   &_rss, &_git {
     text-decoration: none;
-    
+    color: #16223a;
+
     &:visited {
       color: #16223a;
     }

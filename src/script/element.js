@@ -22,4 +22,16 @@ export default class {
   get style() {
     return this.element.style;
   }
+
+  set style(value) {
+    this.element.style = value;
+  }
+
+  get value() {
+    return this.element.value;
+  }
+
+  set value(value) {
+    this.element.value = value;
+  }
 }

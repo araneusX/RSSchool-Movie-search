@@ -19,12 +19,21 @@
           <form id="js-form" class="search_form" autocomplete="off">
             <input type="text" id="js-input" class="search_input" placeholder="Search movie">
             <button id="js-button" class="search_button">F<span>i</span>nd</button>
-            <div id="js-preloader" class="search_preloader"></div>
+            <div id="js-preloader" class="search_preloader">
+              <div class="search_fill"></div>
+            </div>
           </form>
         </div>
       </section>
       <section class="slider">
-        <div class="wrapper">
+        <div id="js-slides" class="slider_wrapper disappearing transitioned">
+          <div class="swiper-container">
+            <div class="swiper-wrapper">
+            </div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+        </div>
         </div>
       </section>
     </main>
