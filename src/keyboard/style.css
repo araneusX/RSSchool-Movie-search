@@ -1,0 +1,76 @@
+.container {
+  display: none;
+  flex-direction: column;
+  width: 41vw;
+  border-radius: 5px;
+}
+
+.visible {
+  display: flex;
+}
+
+.row {
+  display: flex;
+}
+
+.key {
+  flex: 0 0 2.5vw;
+  height: 2.5vw;
+  margin: 0.2vw;
+  white-space: nowrap;
+  overflow: hidden;
+  font-family: Consolas;
+  font-size: 1vw;
+  border-radius: 0.2vw;
+  box-shadow: 0px 0px 0.2vw 1px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  line-height: 2.5vw;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: color 0.1s linear;
+}
+
+.key.pressed {
+  box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.5) inset;
+  background-color: rgba(9, 255, 0, 0.164);
+  transition: color 0.1s linear;
+}
+
+.stretch {
+  flex: 1 0 2.5vw;
+}
+
+.row:nth-child(5)>.key:nth-child(2) {
+  flex: 6 0 2.5vw;
+}
+
+.firstChar {
+  vertical-align: 50%;
+  font-size: 0.75em;
+  margin-right: 0.5vw;
+  line-height: 1.25vw;
+}
+
+.secondChar {
+  vertical-align: -50%;
+  line-height: 1.25vw;
+}
+
+.key.caps {
+  box-shadow:
+    0px 0px 3px 1px rgba(0, 0, 0, 0.5),
+    0px 0px 0px 2px white inset,
+    0px 0px 0px 4px rgb(230, 145, 124) inset;
+}
+
+.key.caps.pressed {
+  box-shadow:
+  0px 0px 3px 1px rgba(0, 0, 0, 0.5) inset,
+    0px 0px 0px 6px rgba(230, 145, 124, 0.164) inset,
+    0px 0px 0px 2px white inset,
+    0px 0px 0px 4px rgb(230, 145, 124) inset;
+}
+
+.lowercase {
+  text-transform: lowercase;
+}

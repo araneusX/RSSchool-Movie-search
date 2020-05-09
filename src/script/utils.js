@@ -15,8 +15,9 @@ const normalizeUserRequest = async (userRequest) => {
 export const getMoviesList = async (userRequest, page) => {
   let data;
   const normalizeRequest = await normalizeUserRequest(userRequest);
+  const preparedRequest = normalizeRequest.split(' ').join('+');
   try {
-    const url = `https://www.omdbapi.com/?s=${normalizeRequest}&page=${page}&apikey=e5a28065`;
+    const url = `https://www.omdbapi.com/?s=${preparedRequest}&page=${page}&apikey=e5a28065`;
     const res = await fetch(url);
     data = await res.json();
     data.request = normalizeRequest;

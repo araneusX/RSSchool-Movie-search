@@ -1,4 +1,6 @@
 import Swiper from 'swiper';
+import swiperConfig from './swiperConfig';
+import Keyboard from '../keyboard/keyboard';
 import '../css/style.scss';
 
 import Element from './element';
@@ -21,40 +23,88 @@ const runApp = async () => {
   let nextPage = 1;
   let isLoading = false;
 
-  const swiper = new Swiper('.swiper-container', {
-    direction: 'horizontal',
-    loop: false,
-    pagination: {
-      el: '.swiper-pagination',
-      clickable: true,
-      dynamicBullets: true,
-      dynamicMainBullets: 7,
-    },
-    navigation: {
-      nextEl: '.swiper-button-next',
-      prevEl: '.swiper-button-prev',
-    },
-    watchOverflow: true,
-    fadeEffect: {
-      crossFade: true,
-    },
-    centerInsufficientSlides: true,
-    slidesPerView: 1,
-    spaceBetween: 10,
-    breakpoints: {
-      '@1': {
-        slidesPerView: 2,
-        spaceBetween: 20,
-      },
-      '@1.3': {
-        slidesPerView: 3,
-        spaceBetween: 30,
-      },
-      '@1.8': {
-        slidesPerView: 4,
-        spaceBetween: 30,
-      },
-    },
+  const swiper = new Swiper('.swiper-container', swiperConfig);
+
+  const searchMoves = async (userResponse) => {
+    preloader.show();
+    try {
+      const list = await getMoviesList(userResponse, 1);
+      if (list.Response === 'True') {
+        const movies = list.Search;
+        const slides = await getSlides(movies);
+
+        totalResults = list.totalResults;
+        allShowResults = movies.length;
+        request = list.request;
+        nextPage = 2;
+
+        slidesWrapper.addClass('disappearing');
+        setTimeout(() => {
+          swiper.removeAllSlides();
+          swiper.appendSlide(slides);
+          slidesWrapper.removeClass('disappearing');
+          preloader.hide();
+        }, 300);
+        message.content = `Showing results for "${list.request}":`;
+        message.removeClass('error');
+        message.addClass('success');
+        return true;
+      }
+      if (list.Error === 'Movie not found!') {
+        message.content = `No results for "${list.request}"...`;
+      } else {
+        message.content = `Unable to process request. ${list.Error}`;
+      }
+    } catch (err) {
+      message.content = `${err}`.slice(7);
+    }
+    message.removeClass('success');
+    message.addClass('error');
+    preloader.hide();
+    return false;
+  };
+
+  let keyboard;
+  let isKeyboard = false;
+  let onDocumentClick;
+  const hideKeyboard = () => {
+    keyboard.hide();
+    document.removeEventListener('click', onDocumentClick);
+    document.removeEventListener('keydown', hideKeyboard);
+    isKeyboard = false;
+  };
+
+  const showKeyboard = () => {
+    keyboard.show();
+    document.addEventListener('click', onDocumentClick);
+    document.addEventListener('keydown', hideKeyboard);
+    isKeyboard = true;
+  };
+
+  onDocumentClick = (event) => {
+    if (!(event.target.closest('#js-input')
+        || event.target.closest('#js-keyboard')
+        || event.target.closest('#js-clear'))) {
+      hideKeyboard();
+    }
+  };
+  const onEnterCallback = async () => {
+    if (input.value !== '') {
+      const result = await searchMoves(input.value);
+      if (result) {
+        hideKeyboard();
+      }
+    }
+  };
+  const keyboardBtn = new Element(document.getElementById('js-keyboardbtn'));
+  keyboard = new Keyboard(document.getElementById('js-keyboard'), input.element, onEnterCallback);
+  keyboardBtn.addListener('click', (event) => {
+    event.stopPropagation();
+    if (!isKeyboard) {
+      showKeyboard();
+    } else {
+      hideKeyboard();
+    }
   });
 
   preloader.show();
@@ -86,44 +136,7 @@ const runApp = async () => {
   form.addListener('submit', async (e) => {
     e.preventDefault();
     if (input.value !== '') {
-      preloader.show();
-      try {
-        const list = await getMoviesList(input.value, 1);
-        if (list.Response === 'True') {
-          const movies = list.Search;
-          const slides = await getSlides(movies);
-
-          totalResults = list.totalResults;
-          allShowResults = movies.length;
-          request = list.request;
-          nextPage = 2;
-
-          slidesWrapper.addClass('disappearing');
-          setTimeout(() => {
-            swiper.removeAllSlides();
-            swiper.appendSlide(slides);
-            slidesWrapper.removeClass('disappearing');
-            preloader.hide();
-          }, 300);
-          message.content = `Showing results for "${list.request}":`;
-          message.removeClass('error');
-          message.addClass('success');
-        } else {
-          if (list.Error === 'Movie not found!') {
-            message.content = `No results for "${list.request}"...`;
-          } else {
-            message.content = `Unable to process request. ${list.Error}`;
-          }
-          message.removeClass('success');
-          message.addClass('error');
-          preloader.hide();
-        }
-      } catch (err) {
-        message.content = `${err}`.slice(7);
-        message.removeClass('success');
-        message.addClass('error');
-        preloader.hide();
-      }
+      await searchMoves(input.value);
     } else {
       input.focus();
     }
