@@ -19,6 +19,11 @@ export default class {
     this.element.classList.remove(...classes);
   }
 
+  toggleClass(...param) {
+    this.element.classList.toggle(...param);
+  }
+
+
   focus() {
     this.element.focus();
   }

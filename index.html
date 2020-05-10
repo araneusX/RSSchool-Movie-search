@@ -11,20 +11,28 @@
     <header class="header">
       <div class="wrapper">
         <h1>Mov<span>i</span>e Search</h1>
-      </div>
+        <div id="js-featuredbtn" class="header_featured-btn">My featured movies</div>
     </header>
     <main>
+      <section class="menu">
+        <div class="wrapper menu__wrapper">
+          <div id="js-featured" class="menu_featured"></div>
+          
+          </div>
+        </div>
+      </section>
       <section class="search">
         <div class="wrapper search_wrapper">
           <form id="js-form" class="search_form" autocomplete="off">
             <input type="text" id="js-input" class="search_input" placeholder="Search movie" autofocus>
-            <button id="js-button" class="search_button">F<span>i</span>nd</button>
             <div id="js-clear" class="search_clear"></div>
+            <button id="js-button" class="search_button">F<span>i</span>nd</button>
             <div id="js-keyboardbtn" class="search_keyboard-btn"></div>
             <div id="js-preloader" class="search_preloader">
               <div class="search_fill"></div>
             </div>
             <div id="js-keyboard" class="search_keyboard"></div>
+            <div id="js-mic" class="search_mic"></div>
           </form>
           <div id="js-message" class="search_message"></div>
         </div>
@@ -49,5 +57,5 @@
     </footer>
   </body>
 </html>
-
-  
+  <span class="menu_title">${title}</span>
+  <span class="menu_remove"></span>

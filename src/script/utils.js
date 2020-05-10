@@ -12,40 +12,30 @@ const normalizeUserRequest = async (userRequest) => {
   return result;
 };
 
-export const getMoviesList = async (userRequest, page) => {
-  let data;
-  const normalizeRequest = await normalizeUserRequest(userRequest);
-  const preparedRequest = normalizeRequest.split(' ').join('+');
-  try {
-    const url = `https://www.omdbapi.com/?s=${preparedRequest}&page=${page}&apikey=e5a28065`;
-    const res = await fetch(url);
-    data = await res.json();
-    data.request = normalizeRequest;
-  } catch (err) {
-    throw new Error(`Unable to get data on request "${normalizeRequest}". Try again later`)
-  }
-  return data;
-};
-
 export const getMoreInfo = async (moviesArr) => {
-  let result;
-
   const promises = moviesArr.map(async (movie) => {
-    const res = await fetch(`https://www.omdbapi.com/?i=${movie.imdbID}&apikey=e5a28065`);
-    const data = await res.json();
-    return data;
+    //const res = await fetch(`https://www.omdbapi.com/?i=${movie.imdbID}&apikey=e5a28065`);
+    //const data = await res.json();
+    //return data;
   });
 
-  try {
-    result = await Promise.allSettled(promises);
-  } catch (error) {
-    throw new Error('Some movie data is not available now. Try again later');
-  }
+  const allData = await Promise.allSettled(promises);
+  const result = {};
+  let ok = true;
+  result.value = allData.map((item) => {
+    if (item.value && item.value.Response === 'True') {
+      return item;
+    }
+    ok = false;
+    return {
+      value: { Ratings: [{ Value: 'N/A' }] },
+    };
+  });
+  result.ok = ok;
   return result;
 };
 
 export const getPosters = async (moviesArr) => {
-  let result;
   const promises = moviesArr.map(async (movie) => {
     const link = movie.Poster === 'N/A' ? '/src/img/noposter.jpg' : movie.Poster;
     let res;
@@ -61,17 +51,41 @@ export const getPosters = async (moviesArr) => {
     const objectURL = URL.createObjectURL(blob);
     return objectURL;
   });
-  try {
-    result = await Promise.allSettled(promises);
-  } catch (err) {
-    throw new Error('Server unavailable now. Try again later');
-  }
+  const result = await Promise.allSettled(promises);
   return result;
 };
 
+export const getMoviesList = async (userRequest, page) => {
+  let data;
+  const normalizeRequest = await normalizeUserRequest(userRequest);
+  const preparedRequest = normalizeRequest.split(' ').join('+');
+  try {
+    const url = `https://www.omdbapi.com/?s=${preparedRequest}&page=${page}&apikey=e5a28065`;
+    const res = await fetch(url);
+    data = await res.json();
+    if (data.Search) {
+      const uniqueMovies = [];
+      let duplicates = 0;
+      data.Search.forEach((movie) => {
+        if (!uniqueMovies.find((item) => item.imdbID === movie.imdbID)) {
+          uniqueMovies.push(movie);
+        } else {
+          duplicates += 1;
+        }
+      });
+      data.Search = uniqueMovies;
+      data.duplicates = duplicates;
+    }
+    data.request = normalizeRequest;
+  } catch (err) {
+    throw new Error('Unable to get data. Try again later');
+  }
+  return data;
+};
+
 export const getRandomWord = () => {
-  const vocabulary = ['happy', 'hope', 'friend', 'love', 'holidays', 'fun', 'weekend', 'chocolate', 'sweet', 'orange', 'live'];
-  return vocabulary[Math.floor(Math.random() * 11)];
+  const vocabulary = ['hello', 'happy', 'hope', 'friend', 'love', 'holidays', 'fun', 'weekend', 'chocolate', 'sweet', 'orange', 'live'];
+  return vocabulary[Math.floor(Math.random() * 12)];
 };
 
 export const getShowSlidersCount = (slider) => {

@@ -94,3 +94,39 @@
 .disappearing {
   opacity: 0;
 }
+
+.slider_more {
+  position: absolute;
+  height: 30px;
+  width: 50%;
+  background: linear-gradient(90deg, #16223a00 0%, #16223ae3 50%, #16223ae3 100%);
+  bottom: 80px;
+  left: 15%;
+  color: white;
+  line-height: 30px;
+  text-align: center;
+  padding-left: 10px;
+  cursor: pointer;
+  user-select: none;
+  
+  &:hover {
+    box-shadow: -25px 0 30px -25px rgba(255, 255, 255, 0.452) inset;  
+  }
+}
+
+.slider_later {
+  height: 30px;
+  width: 20%;
+  position: absolute;
+  background: url(/src/img/plus.svg) no-repeat 30%, linear-gradient(90deg, #16223ae3 0%, #16223ae3 50%, #16223a00 100%);
+  left: 65%;
+  bottom: 80px;
+  animation: pulse 1s infinite;
+  border-left: 1px solid white;
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    box-shadow: 25px 0 30px -25px rgba(255, 255, 255, 0.452) inset;
+  }
+}
