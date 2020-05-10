@@ -1,4 +1,4 @@
-import { getPosters } from './utils';
+import { getPosters, yearNormalize } from './utils';
 
 export const createSlide = (id, title, poster, year, rating) => {
   const slide = document.createElement('div');
@@ -21,9 +21,7 @@ export const getSlides = async (slidesData) => {
   const posters = await getPosters(slidesData.movies);
 
   for (let i = 0; i < slidesData.movies.length; i += 1) {
-    const year = slidesData.movies[i].Year[slidesData.movies[i].Year.length - 1] === '–'
-      ? slidesData.movies[i].Year.slice(0, slidesData.movies[i].Year.length - 1)
-      : slidesData.movies[i].Year;
+    const year = yearNormalize(slidesData.movies[i].Year);
     result.push(createSlide(
       slidesData.movies[i].imdbID,
       slidesData.movies[i].Title,

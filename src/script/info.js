@@ -1,5 +1,5 @@
 import preloader from './preloader';
-import { getMoreInfo, getPosters } from './utils';
+import { getMoreInfo, getPosters, yearNormalize } from './utils';
 import Element from './element';
 
 const container = new Element(document.getElementById('js-info'));
@@ -11,9 +11,7 @@ export default async (id) => {
     const info = infoData.value[0].value;
     const infoPoster = await getPosters([{ Poster: info.Poster }]);
     const poster = infoPoster[0].value;
-    const year = info.Year[info.Year.length - 1] === '–'
-      ? info.Year.slice(0, info.Year.length - 1)
-      : info.Year;
+    const year = yearNormalize(info.Year);
 
     const modal = document.createElement('div');
     modal.classList.add('info_overlay');

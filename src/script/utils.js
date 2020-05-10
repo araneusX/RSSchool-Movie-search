@@ -102,3 +102,9 @@ export const getShowSlidersCount = (slider) => {
   }
   return slidesCount;
 };
+
+export const yearNormalize = (year) => (
+  /\d{1}/.test(year[year.length - 1])
+    ? year
+    : year.slice(0, year.length - 1)
+);

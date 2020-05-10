@@ -2,6 +2,7 @@ module.exports = {
   env: {
     browser: true,
     es6: true,
+    jest: true,
   },
   extends: [
     'airbnb-base',
@@ -18,4 +19,5 @@ module.exports = {
     'linebreak-style': 'off',
   },
   ignorePatterns: ['node_modules/', 'dist/', 'package.json', 'package-lock.json', 'webpack.config.js', '.eslintrc.js'],
+  plugins: ["jest"],
 };
