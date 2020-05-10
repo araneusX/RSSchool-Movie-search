@@ -43,7 +43,7 @@
   &_clear {
     display: none;
     position: absolute;
-    right: 135px;
+    right: 115px;
     top: 1px;
     height: 35px;
     width: 35px;
@@ -56,14 +56,14 @@
     }
 
     @media (max-width: 769px) {
-      right: 100px;
+      right: 70px;
     }
 
   }
 
   &_keyboard-btn {
     position: absolute;
-    right: 96px;
+    right: 75px;
     top: 2px;
     height: 35px;
     width: 35px;
@@ -157,7 +157,7 @@
     background-position: 8px 50%;
     background-size: 18px;
     background-repeat: no-repeat;
-    padding: 0 105px 0 35px;
+    padding: 0 85px 0 35px;
     min-width: 235px;
     margin-right: 2px;
 
@@ -173,7 +173,7 @@
     }
 
     @media (max-width: 769px) {
-      padding: 0 70px 0 35px;
+      padding: 0 45px 0 35px;
     }
 
   }

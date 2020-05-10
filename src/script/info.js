@@ -19,7 +19,7 @@ export default async (id) => {
       <div class="info_modal">
         <div class="info_container">
           <div class="info_wrapper">
-            <img src="${poster}" alt="${info.Title}">
+            <img class="info_poster" src="${poster}" alt="${info.Title}">
             <div class="info_inner">
               <p class="info_title">${info.Title} (${year})</p>
               <p class="info_country">${info.Country}</p>
