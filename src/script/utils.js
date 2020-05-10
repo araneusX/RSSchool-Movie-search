@@ -14,9 +14,9 @@ const normalizeUserRequest = async (userRequest) => {
 
 export const getMoreInfo = async (moviesArr) => {
   const promises = moviesArr.map(async (movie) => {
-    //const res = await fetch(`https://www.omdbapi.com/?i=${movie.imdbID}&apikey=e5a28065`);
-    //const data = await res.json();
-    //return data;
+    const res = await fetch(`https://www.omdbapi.com/?i=${movie.imdbID}&apikey=e5a28065`);
+    const data = await res.json();
+    return data;
   });
 
   const allData = await Promise.allSettled(promises);
@@ -44,6 +44,7 @@ export const getPosters = async (moviesArr) => {
     } catch (err) {
       res = await fetch('/src/img/noposter.jpg');
     }
+
     if (!res.ok) {
       res = await fetch('/src/img/noposter.jpg');
     }

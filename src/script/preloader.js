@@ -1,6 +1,6 @@
 import Element from './element';
 
-export default class extends Element {
+class Preloader extends Element {
   constructor() {
     super(document.getElementById('js-preloader'));
   }
@@ -13,3 +13,5 @@ export default class extends Element {
     this.style.visibility = '';
   }
 }
+
+export default new Preloader();

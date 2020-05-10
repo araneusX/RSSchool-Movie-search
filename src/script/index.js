@@ -4,7 +4,9 @@ import Keyboard from '../keyboard/keyboard';
 import '../css/style.scss';
 
 import Element from './element';
-import Preloader from './preloader';
+import preloader from './preloader';
+import saveList from './saveList';
+import showInfo from './info';
 
 import {
   getMoviesList, getRandomWord, getShowSlidersCount, getMoreInfo,
@@ -15,12 +17,10 @@ const runApp = async () => {
   const form = new Element(document.getElementById('js-form'));
   const input = new Element(document.getElementById('js-input'));
   const slidesWrapper = new Element(document.getElementById('js-slides'));
-  const preloader = new Preloader();
   const message = new Element(document.getElementById('js-message'));
   const clearBtn = new Element(document.getElementById('js-clear'));
   const featuredBtn = new Element(document.getElementById('js-featuredbtn'));
   const featured = new Element(document.getElementById('js-featured'));
-
 
   let allShowResults;
   let totalResults;
@@ -169,6 +169,14 @@ const runApp = async () => {
       document.addEventListener('mousedown', closeMenu);
     } else {
       document.removeEventListener('mousedown', closeMenu);
+    }
+  });
+
+  slidesWrapper.addListener('click', (event) => {
+    if (event.target.dataset.later) {
+      saveList.addItem(event.target.dataset.later, event.target.dataset.title);
+    } else if (event.target.dataset.more) {
+      showInfo(event.target.dataset.more);
     }
   });
 
