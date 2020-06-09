@@ -5,6 +5,7 @@ let items = {};
 
 const createItem = (id, title) => {
   const item = document.createElement('li');
+  item.id = `f-${id}`;
   item.innerHTML = `
     <div class="featured_item">
       <span data-open="${id}" class="featured_title">${title}</span>
@@ -14,20 +15,21 @@ const createItem = (id, title) => {
   menu.append(item);
 };
 
-const addItem = (id, title) => {
-  if (!(id in items)) {
-    createItem(id, title);
-    items[id] = title;
-    localStorage.movieSearchList = JSON.stringify(items);
-  }
-};
-
 const removeItem = (id, element) => {
   delete items[id];
   element.remove();
   localStorage.movieSearchList = JSON.stringify(items);
 };
 
+const addItem = (id, title) => {
+  if (!(id in items)) {
+    createItem(id, title);
+    items[id] = title;
+    localStorage.movieSearchList = JSON.stringify(items);
+  } else {
+    removeItem(id, document.getElementById(`f-${id}`));
+  }
+};
 
 if (localStorage.movieSearchList) {
   items = JSON.parse(localStorage.movieSearchList);

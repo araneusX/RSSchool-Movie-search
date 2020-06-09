@@ -1,16 +1,14 @@
-import Element from './element';
-
-class Preloader extends Element {
+class Preloader {
   constructor() {
-    super(document.getElementById('js-preloader'));
+    this.element = document.getElementById('js-preloader');
   }
 
   show() {
-    this.style.visibility = 'visible';
+    this.element.style.visibility = 'visible';
   }
 
   hide() {
-    this.style.visibility = '';
+    this.element.style.visibility = '';
   }
 }
 

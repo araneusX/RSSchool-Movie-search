@@ -4,7 +4,6 @@ import swiperConfig from './swiperConfig';
 import Keyboard from '../keyboard/keyboard';
 import '../css/style.scss';
 
-import Element from './element';
 import preloader from './preloader';
 import saveList from './saveList';
 import showInfo from './info';
@@ -15,13 +14,13 @@ import {
 import { getSlides } from './createSlide';
 
 const runApp = async () => {
-  const form = new Element(document.getElementById('js-form'));
-  const input = new Element(document.getElementById('js-input'));
-  const slidesWrapper = new Element(document.getElementById('js-slides'));
-  const message = new Element(document.getElementById('js-message'));
-  const clearBtn = new Element(document.getElementById('js-clear'));
-  const featuredBtn = new Element(document.getElementById('js-featuredbtn'));
-  const featured = new Element(document.getElementById('js-featured'));
+  const form = document.getElementById('js-form');
+  const input = document.getElementById('js-input');
+  const slidesWrapper = document.getElementById('js-slides');
+  const message = document.getElementById('js-message');
+  const clearBtn = document.getElementById('js-clear');
+  const featuredBtn = document.getElementById('js-featuredbtn');
+  const featured = document.getElementById('js-featured');
 
   let allShowResults;
   let totalResults;
@@ -36,8 +35,7 @@ const runApp = async () => {
     if (mode !== 'add'
         || (!isLoading
             && allShowResults - (getShowSlidersCount(swiper) + swiper.activeIndex) < 7
-            && allShowResults < totalResults)
-    ) {
+            && allShowResults < totalResults)) {
       isLoading = true;
 
       if (mode !== 'add') {
@@ -57,16 +55,16 @@ const runApp = async () => {
           nextPage += 1;
 
           if (mode === 'user') {
-            slidesWrapper.addClass('disappearing');
+            slidesWrapper.classList.add('disappearing');
             setTimeout(() => {
               swiper.removeAllSlides();
               swiper.appendSlide(slides);
-              slidesWrapper.removeClass('disappearing');
+              slidesWrapper.classList.remove('disappearing');
               preloader.hide();
             }, 300);
           } else {
             swiper.appendSlide(slides);
-            slidesWrapper.removeClass('disappearing');
+            slidesWrapper.classList.remove('disappearing');
             preloader.hide();
           }
 
@@ -77,11 +75,11 @@ const runApp = async () => {
             totalResults = list.totalResults - list.duplicates;
             allShowResults = movies.length;
             if (!additional.ok) {
-              message.content = `Showing results for "${list.request}", but some movie data is not available now. Try again later.`;
-              message.addClass('error');
+              message.innerText = `Showing results for "${list.request}", but some movie data is not available now. Try again later.`;
+              message.classList.add('error');
             } else {
-              message.content = `Showing results for "${list.request}":`;
-              message.removeClass('error');
+              message.innerText = `Showing results for "${list.request}":`;
+              message.classList.remove('error');
             }
           }
 
@@ -89,14 +87,14 @@ const runApp = async () => {
           return list.request;
         }
         if (list.Error === 'Movie not found!') {
-          message.content = `No results for "${list.request}"...`;
+          message.innerText = `No results for "${list.request}"...`;
         } else {
-          message.content = `Unable to process request. ${list.Error}`;
+          message.innerText = `Unable to process request. ${list.Error}`;
         }
       } catch (err) {
-        message.content = `${err}`.slice(7);
+        message.innerText = `${err}`;
       }
-      message.addClass('error');
+      message.classList.add('error');
       preloader.hide();
       isLoading = false;
     }
@@ -104,23 +102,23 @@ const runApp = async () => {
   };
 
   let keyboard;
-  let isKeyboard = false;
-  let onDocumentClick;
+  let hasKeyboard = false;
+  // let onDocumentClick;
   const hideKeyboard = () => {
     keyboard.hide();
     document.removeEventListener('click', onDocumentClick);
     document.removeEventListener('keydown', hideKeyboard);
-    isKeyboard = false;
+    hasKeyboard = false;
   };
 
   const showKeyboard = () => {
     keyboard.show();
     document.addEventListener('click', onDocumentClick);
     document.addEventListener('keydown', hideKeyboard);
-    isKeyboard = true;
+    hasKeyboard = true;
   };
 
-  onDocumentClick = (event) => {
+  const onDocumentClick = (event) => {
     if (!(event.target.closest('#js-input')
         || event.target.closest('#js-keyboard')
         || event.target.closest('#js-clear'))) {
@@ -137,30 +135,31 @@ const runApp = async () => {
     }
   };
 
-  const keyboardBtn = new Element(document.getElementById('js-keyboardbtn'));
-  keyboard = new Keyboard(document.getElementById('js-keyboard'), input.element, onEnterCallback);
-  keyboardBtn.addListener('click', (event) => {
+  const keyboardBtn = document.getElementById('js-keyboardbtn');
+  keyboard = new Keyboard(document.getElementById('js-keyboard'), input, onEnterCallback);
+  keyboardBtn.addEventListener('click', (event) => {
     event.stopPropagation();
-    if (!isKeyboard) {
+    if (!hasKeyboard) {
       showKeyboard();
     } else {
       hideKeyboard();
     }
   });
 
-  clearBtn.addListener('click', () => {
-    input.value = ''; input.focus();
+  clearBtn.addEventListener('click', () => {
+    input.value = '';
+    input.focus();
   });
 
 
-  featuredBtn.addListener('click', (event) => {
+  featuredBtn.addEventListener('click', (event) => {
     event.stopPropagation();
-    featured.toggleClass('open');
+    featured.classList.toggle('open');
     isMenu = !isMenu;
 
     const closeMenu = (e) => {
       if (!(e.target.closest('#js-featured') || e.target.closest('#js-featuredbtn'))) {
-        featured.removeClass('open');
+        featured.classList.remove('open');
         document.removeEventListener('click', closeMenu);
         isMenu = false;
       }
@@ -173,15 +172,18 @@ const runApp = async () => {
     }
   });
 
-  slidesWrapper.addListener('click', (event) => {
+  slidesWrapper.addEventListener('click', (event) => {
     if (event.target.dataset.later) {
       saveList.addItem(event.target.dataset.later, event.target.dataset.title);
+      event.target.classList.toggle('added');
+      console.log(event.target);
+      
     } else if (event.target.dataset.more) {
       showInfo(event.target.dataset.more);
     }
   });
 
-  form.addListener('submit', async (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (input.value !== '') {
       request = await fillSlider(input.value, 'user');
@@ -193,9 +195,7 @@ const runApp = async () => {
   swiper.on('slideChange', () => { fillSlider(request, 'add'); });
 
   swiper.on('reachEnd', () => {
-    if (isLoading) {
-      preloader.show();
-    }
+    isLoading && preloader.show();
   });
 
   fillSlider(request);

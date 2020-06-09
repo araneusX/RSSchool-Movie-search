@@ -1,6 +1,14 @@
 import { getPosters, yearNormalize } from './utils';
 
 export const createSlide = (id, title, poster, year, rating) => {
+  let featured = false;
+  if (localStorage.movieSearchList) {
+    const items = JSON.parse(localStorage.movieSearchList);
+    if (items[id]) {
+      featured = true;
+    }
+  }
+
   const slide = document.createElement('div');
   slide.classList.add('swiper-slide');
   slide.innerHTML = `
@@ -10,7 +18,8 @@ export const createSlide = (id, title, poster, year, rating) => {
   <div class="swiper-slide_rating">
       <span>IMDb: ${rating}</span>
   </div>
-  <div data-later="${id}" data-title="${title} (${year})" class="slider_later"></div>
+  <div data-later="${id}" data-title="${title} (${year})" class="slider_later${
+    featured ? ' added' : ''}"></div>
   <div data-more="${id}" class="slider_more">Learn more...</div>
   `;
   return slide;

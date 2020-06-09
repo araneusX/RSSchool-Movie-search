@@ -131,4 +131,8 @@
   &:hover {
     box-shadow: 25px 0 30px -25px rgba(255, 255, 255, 0.452) inset;
   }
+
+  &.added {
+    background: url(/src/img/plust.svg) no-repeat 30%, linear-gradient(90deg, #16223ae3 0%, #16223ae3 50%, #16223a00 100%);
+  }
 }

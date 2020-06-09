@@ -1,8 +1,7 @@
 import preloader from './preloader';
 import { getMoreInfo, getPosters, yearNormalize } from './utils';
-import Element from './element';
 
-const container = new Element(document.getElementById('js-info'));
+const container = document.getElementById('js-info');
 
 export default async (id) => {
   preloader.show();
@@ -38,7 +37,8 @@ export default async (id) => {
       </div>
     `;
 
-    container.content = modal;
+    container.innerHTML = '';
+    container.append(modal);
     const onDown = (event) => {
       event.stopPropagation();
     };
@@ -47,10 +47,10 @@ export default async (id) => {
       if (event.target.dataset.info === 'close' || event.target === modal) {
         modal.removeEventListener('click', onClick);
         modal.removeEventListener('mousedown', onDown);
-        container.addClass('hiding');
-        container.addListener('animationend', () => {
+        container.classList.add('hiding');
+        container.addEventListener('animationend', () => {
           modal.remove();
-          container.removeClass('hiding');
+          container.classList.remove('hiding');
         }, { once: true });
       }
     };
