@@ -64,6 +64,7 @@ export const getMoviesList = async (userRequest, page) => {
     const url = `https://www.omdbapi.com/?s=${preparedRequest}&page=${page}&apikey=e5a28065`;
     const res = await fetch(url);
     data = await res.json();
+
     if (data.Search) {
       const uniqueMovies = [];
       let duplicates = 0;
@@ -86,7 +87,7 @@ export const getMoviesList = async (userRequest, page) => {
 
 export const getRandomWord = () => {
   const vocabulary = ['hello', 'happy', 'hope', 'friend', 'love', 'holidays', 'fun', 'weekend', 'chocolate', 'sweet', 'orange', 'live'];
-  return vocabulary[Math.floor(Math.random() * 12)];
+  return vocabulary[Math.floor(Math.random() * vocabulary.length)];
 };
 
 export const getShowSlidersCount = (slider) => {

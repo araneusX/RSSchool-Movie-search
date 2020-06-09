@@ -1,14 +1,14 @@
 import showInfo from './info';
 
-const menu = document.getElementById('js-featured');
+const menu = document.getElementById('js-list');
 let items = {};
 
 const createItem = (id, title) => {
   const item = document.createElement('li');
   item.innerHTML = `
-    <div class="menu_item">
-      <span data-open="${id}" class="menu_title">${title}</span>
-      <span data-remove="${id}" class="menu_remove"></span>
+    <div class="featured_item">
+      <span data-open="${id}" class="featured_title">${title}</span>
+      <span data-remove="${id}" class="featured_remove"></span>
     </div>
   `;
   menu.append(item);

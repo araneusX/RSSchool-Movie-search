@@ -27,7 +27,8 @@ export const getSlides = async (slidesData) => {
       slidesData.movies[i].Title,
       posters[i].value,
       year,
-      /* '9.0/10', / */ slidesData.additional[i].value.Ratings[0].Value, /**/
+      slidesData.additional[i].value.Ratings[0]
+        ? slidesData.additional[i].value.Ratings[0].Value : '0/0',
     ));
   }
   return result;

@@ -47,7 +47,11 @@ export default async (id) => {
       if (event.target.dataset.info === 'close' || event.target === modal) {
         modal.removeEventListener('click', onClick);
         modal.removeEventListener('mousedown', onDown);
-        modal.remove();
+        container.addClass('hiding');
+        container.addListener('animationend', () => {
+          modal.remove();
+          container.removeClass('hiding');
+        }, { once: true });
       }
     };
     modal.addEventListener('mousedown', onClick);

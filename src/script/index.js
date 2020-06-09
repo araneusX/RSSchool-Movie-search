@@ -1,3 +1,4 @@
+import '../../node_modules/swiper/css/swiper.min.css';
 import Swiper from 'swiper';
 import swiperConfig from './swiperConfig';
 import Keyboard from '../keyboard/keyboard';

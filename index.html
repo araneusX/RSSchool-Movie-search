@@ -3,7 +3,7 @@
   <head> 
     <title>Movie Search</title>
     <meta charset="UTF-8">
-    <link rel="icon" href="/assets/favicon.ico">
+    <link rel="icon" href="/src/img/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   </head>
@@ -16,9 +16,10 @@
     <main>
       <section class="menu">
         <div class="wrapper menu__wrapper">
-          <ol id="js-featured" class="menu_featured">Add your favorite movies here...</ol>
-          <div id="js-info" class="menu_info info">
+          <div id="js-featured" class="menu_featured featured">
+            <ol id="js-list" class="featured_list">Add your favorite movies here...</ol>
           </div>
+          <div id="js-info" class="menu_info info"></div>
         </div>
       </section>
       <section class="search">
@@ -28,8 +29,8 @@
             <div id="js-clear" class="search_clear"></div>
             <button id="js-button" class="search_button">F<span>i</span>nd</button>
             <div id="js-keyboardbtn" class="search_keyboard-btn"></div>
-            <div id="js-preloader" class="search_preloader">
-              <div class="search_fill"></div>
+            <div id="js-preloader" class="search_fill">
+              <div class="search_preloader"></div>
             </div>
             <div id="js-keyboard" class="search_keyboard"></div>
           </form>
