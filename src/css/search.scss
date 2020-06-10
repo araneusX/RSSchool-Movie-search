@@ -34,7 +34,7 @@
     transform: translate(-50%, -50%);
     width: 100px;
     height: 100px;
-    background: url("/src/img/circles.svg") center center no-repeat;
+    background: url("../img/circles.svg") center center no-repeat;
     background-size: 100px;
     opacity: 0.5;
     transition: visibility 0.1s;
@@ -47,7 +47,7 @@
     top: 1px;
     height: 35px;
     width: 35px;
-    background: url("/src/img/clear.svg") center center no-repeat;
+    background: url("../img/clear.svg") center center no-repeat;
     opacity: 0.5;
     cursor: pointer;
 
@@ -67,7 +67,7 @@
     top: 2px;
     height: 35px;
     width: 35px;
-    background: url("/src/img/keyb.svg") center center no-repeat;
+    background: url("../img/keyb.svg") center center no-repeat;
     opacity: 0.6;
     cursor: pointer;
 
@@ -86,7 +86,7 @@
     top: 2px;
     height: 35px;
     width: 35px;
-    background: url("/src/img/mic.svg") center center no-repeat;
+    background: url("../img/mic.svg") center center no-repeat;
     background-size: 12px;
     opacity: 0.6;
     cursor: pointer;
@@ -151,7 +151,7 @@
     border: 1px solid #ced4da;
     border-radius: .25rem;
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-    background-image: url("/src/img/research.svg");
+    background-image: url("../img/research.svg");
     background-color: #ffff;
     background-clip: padding-box;
     background-position: 8px 50%;

@@ -70,7 +70,7 @@
     position: relative;
     display: flex;
     align-items: center;
-    background: url('/src/img/background.jpg') no-repeat fill;
+    background: url('../img/background.jpg') no-repeat fill;
 
     img {
       height: 100%;
@@ -120,7 +120,7 @@
   height: 30px;
   width: 20%;
   position: absolute;
-  background: url(/src/img/plus.svg) no-repeat 30%, linear-gradient(90deg, #16223ae3 0%, #16223ae3 50%, #16223a00 100%);
+  background: url(../img/plus.svg) no-repeat 30%, linear-gradient(90deg, #16223ae3 0%, #16223ae3 50%, #16223a00 100%);
   left: 65%;
   bottom: 80px;
   animation: pulse 1s infinite;
@@ -133,6 +133,6 @@
   }
 
   &.added {
-    background: url(/src/img/plust.svg) no-repeat 30%, linear-gradient(90deg, #16223ae3 0%, #16223ae3 50%, #16223a00 100%);
+    background: url(../img/plust.svg) no-repeat 30%, linear-gradient(90deg, #16223ae3 0%, #16223ae3 50%, #16223a00 100%);
   }
 }

@@ -110,7 +110,7 @@ h1 {
       content: "";
       height: 1em;
       width: 1em;
-      background: url(/src/img/arrow.svg) no-repeat;
+      background: url(../img/arrow.svg) no-repeat;
       display: inline-block;
       background-size: 100% 100%;
       margin-left: 5px;
@@ -150,7 +150,7 @@ h1 {
       height: 1.2em;
       width: 1.2em;
       vertical-align: -10%;
-      background: center / contain no-repeat url("/src/img/github-logo.svg");
+      background: center / contain no-repeat url("../img/github-logo.svg");
       margin: 0 5px
     }
   }
