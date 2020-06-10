@@ -103,7 +103,7 @@ const runApp = async () => {
 
   let keyboard;
   let hasKeyboard = false;
-  // let onDocumentClick;
+  let onDocumentClick;
   const hideKeyboard = () => {
     keyboard.hide();
     document.removeEventListener('click', onDocumentClick);
@@ -118,7 +118,7 @@ const runApp = async () => {
     hasKeyboard = true;
   };
 
-  const onDocumentClick = (event) => {
+  onDocumentClick = (event) => {
     if (!(event.target.closest('#js-input')
         || event.target.closest('#js-keyboard')
         || event.target.closest('#js-clear'))) {
@@ -176,8 +176,6 @@ const runApp = async () => {
     if (event.target.dataset.later) {
       saveList.addItem(event.target.dataset.later, event.target.dataset.title);
       event.target.classList.toggle('added');
-      console.log(event.target);
-      
     } else if (event.target.dataset.more) {
       showInfo(event.target.dataset.more);
     }
@@ -195,7 +193,9 @@ const runApp = async () => {
   swiper.on('slideChange', () => { fillSlider(request, 'add'); });
 
   swiper.on('reachEnd', () => {
-    isLoading && preloader.show();
+    if (isLoading) {
+      preloader.show();
+    }
   });
 
   fillSlider(request);
