@@ -43,6 +43,7 @@ menu.addEventListener('click', (event) => {
     showInfo(event.target.dataset.open);
   } else if (event.target.dataset.remove) {
     removeItem(event.target.dataset.remove, event.target.parentNode.parentNode);
+    document.getElementById(`lb${event.target.dataset.remove}`).classList.remove('added');
   }
 });
 
