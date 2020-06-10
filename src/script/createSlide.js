@@ -19,7 +19,7 @@ export const createSlide = (id, title, poster, year, rating) => {
       <span>IMDb: ${rating}</span>
   </div>
   <div data-later="${id}" data-title="${title} (${year})" class="slider_later${
-    featured ? ' added' : ''}"></div>
+  featured ? ' added' : ''}"></div>
   <div data-more="${id}" class="slider_more">Learn more...</div>
   `;
   return slide;
