@@ -94,6 +94,18 @@ module.exports = {
           },
         },
       },
+      {
+        test: /\.png$/,
+        use: ['file-loader'],
+      },
+      {
+        test: /\.svg$/,
+        use: ['file-loader'],
+      },
+      {
+        test: /\.jpg$/,
+        use: ['file-loader'],
+      },
     ],
   },
 
