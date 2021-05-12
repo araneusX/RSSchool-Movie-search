@@ -41,7 +41,7 @@
     "@babel/plugin-transform-runtime": "^7.9.6",
     "copy-webpack-plugin": "^5.1.1",
     "normalize.css": "^8.0.1",
-    "swiper": "^5.3.8"
+    "swiper": "^6.5.1"
   },
   "browserslist": "> 0.25%, not dead",
   "license": "MIT"
